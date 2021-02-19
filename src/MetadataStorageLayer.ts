@@ -4,12 +4,12 @@ import stringify from "json-stable-stringify";
 
 import { keccak256 } from "./utils";
 
-type PubKeyParams = {
+export type PubKeyParams = {
   pub_key_X: string;
   pub_key_Y: string;
 };
 
-type MetadataParams = PubKeyParams & {
+export type MetadataParams = PubKeyParams & {
   set_data: {
     data: unknown;
     timestamp: string;
@@ -17,14 +17,12 @@ type MetadataParams = PubKeyParams & {
   signature: string;
 };
 
+const ec = new EC("secp256k1");
 class MetadataStorageLayer {
   public metadataHost: string;
 
-  public ec: EC;
-
   constructor(metadataHost = "https://metadata.tor.us") {
     this.metadataHost = metadataHost;
-    this.ec = new EC("secp256k1");
   }
 
   static setAPIKey(apiKey: string): void {
@@ -35,8 +33,9 @@ class MetadataStorageLayer {
     setEmbedHost(embedHost);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   generateMetadataParams(message: string, privateKeyHex: string): MetadataParams {
-    const key = this.ec.keyFromPrivate(privateKeyHex);
+    const key = ec.keyFromPrivate(privateKeyHex);
     const setData = {
       data: message,
       timestamp: Math.floor(Date.now() / 1000).toString(16),

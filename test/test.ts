@@ -31,5 +31,9 @@ describe("Metadata", () => {
       );
       assert.strictEqual(message, randomMessage);
     });
+    // it("should set WebAuthn Torus Share", async () => {});
+    // it("should get WebAuthn Torus Share", async () => {});
+    // it("should set WebAuthn Device Share", async () => {});
+    // it("should get WebAuthn Device Share", async () => {});
   });
 });
