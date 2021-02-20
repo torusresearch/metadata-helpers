@@ -96,7 +96,7 @@ export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: st
   await m.setMetadata(metadataParams, WEBAUTHN_DEVICE_SHARE);
 }
 
-export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string): Promise<T | null> {
+export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string): Promise<T> {
   const keyPair = ec.keyFromPrivate(webAuthnKeyHex);
   const privKey = keyPair.getPrivate();
   const pubKey = keyPair.getPublic();
@@ -115,7 +115,7 @@ export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: 
   return data[verifier];
 }
 
-export async function getDeviceShare<T>(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string): Promise<T | null> {
+export async function getDeviceShare<T>(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string): Promise<T> {
   const keyPair = ec.keyFromPrivate(webAuthnRefHex);
   const privKey = keyPair.getPrivate();
   const pubKey = keyPair.getPublic();

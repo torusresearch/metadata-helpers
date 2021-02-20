@@ -1,9 +1,8 @@
-import { ec as EC } from "elliptic";
-declare type PubKeyParams = {
+export declare type PubKeyParams = {
     pub_key_X: string;
     pub_key_Y: string;
 };
-declare type MetadataParams = PubKeyParams & {
+export declare type MetadataParams = PubKeyParams & {
     set_data: {
         data: unknown;
         timestamp: string;
@@ -12,7 +11,6 @@ declare type MetadataParams = PubKeyParams & {
 };
 declare class MetadataStorageLayer {
     metadataHost: string;
-    ec: EC;
     constructor(metadataHost?: string);
     static setAPIKey(apiKey: string): void;
     static setEmbedHost(embedHost: string): void;

@@ -3,37 +3,53 @@ import { generatePrivate } from "@toruslabs/eccrypto";
 import assert from "assert";
 import elliptic from "elliptic";
 
-import Metadata from "../index";
+import MetadataStorageLayer from "../src/MetadataStorageLayer";
 import { keccak256 } from "../src/utils";
+import { getDeviceShare, getTorusShare, setDeviceShare, setTorusShare } from "../src/webAuthnShareResolver";
 
 describe("Metadata", () => {
   const EC = elliptic.ec;
   const ec = new EC("secp256k1");
-  const metadata = new Metadata();
+  const storage = new MetadataStorageLayer();
   const privKey = generatePrivate();
   const keyPair = ec.keyFromPrivate(privKey);
   const pubKey = keyPair.getPublic();
   let randomMessage: string;
   describe("get", () => {
     it("should get nothing by default", async () => {
-      const res = await metadata.getMetadata({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, null);
+      const res = await storage.getMetadata({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, null);
       assert.strictEqual(res, "");
     });
     it("should set", async () => {
       randomMessage = JSON.stringify({ message: keccak256(Buffer.from(Date.now().toString(), "utf-8")).toString("hex") });
-      const params = metadata.generateMetadataParams(randomMessage, privKey.toString("hex"));
-      await metadata.setMetadata(params, "metadata-test");
+      const params = storage.generateMetadataParams(randomMessage, privKey.toString("hex"));
+      await storage.setMetadata(params, "metadata-test");
     });
     it("should get", async () => {
-      const message = await metadata.getMetadata<string>(
+      const message = await storage.getMetadata<string>(
         { pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) },
         "metadata-test"
       );
       assert.strictEqual(message, randomMessage);
     });
-    // it("should set WebAuthn Torus Share", async () => {});
-    // it("should get WebAuthn Torus Share", async () => {});
-    // it("should set WebAuthn Device Share", async () => {});
-    // it("should get WebAuthn Device Share", async () => {});
+    it("should set and get WebAuthn Torus Share", async () => {
+      let googleShare = await getTorusShare<string>(storage, privKey.toString("hex"), "google");
+      if (googleShare) {
+        throw new Error("get Torus share should have nothing");
+      }
+      await setTorusShare(storage, privKey.toString("hex"), "google", "someshare");
+      googleShare = await getTorusShare<string>(storage, privKey.toString("hex"), "google");
+      assert.strictEqual(googleShare, "someshare");
+    });
+
+    it("should set and get WebAuthn Device Share", async () => {
+      let googleShare = await getDeviceShare<string>(storage, privKey.toString("hex"), "google");
+      if (googleShare) {
+        throw new Error("get Torus share should have nothing");
+      }
+      await setDeviceShare(storage, privKey.toString("hex"), "google", "someshare");
+      googleShare = await getDeviceShare<string>(storage, privKey.toString("hex"), "google");
+      assert.strictEqual(googleShare, "someshare");
+    });
   });
 });
