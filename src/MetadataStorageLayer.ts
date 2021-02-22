@@ -1,8 +1,7 @@
 import { post, setAPIKey, setEmbedHost } from "@toruslabs/http-helpers";
-import { ec as EC } from "elliptic";
 import stringify from "json-stable-stringify";
 
-import { keccak256 } from "./utils";
+import { ec, keccak256 } from "./utils";
 
 export type PubKeyParams = {
   pub_key_X: string;
@@ -17,7 +16,6 @@ export type MetadataParams = PubKeyParams & {
   signature: string;
 };
 
-const ec = new EC("secp256k1");
 class MetadataStorageLayer {
   public metadataHost: string;
 
@@ -35,7 +33,7 @@ class MetadataStorageLayer {
 
   // eslint-disable-next-line class-methods-use-this
   generateMetadataParams(message: string, privateKeyHex: string): MetadataParams {
-    const key = ec.keyFromPrivate(privateKeyHex);
+    const key = ec.keyFromPrivate(privateKeyHex, "hex");
     const setData = {
       data: message,
       timestamp: Math.floor(Date.now() / 1000).toString(16),
@@ -46,27 +44,21 @@ class MetadataStorageLayer {
       pub_key_Y: key.getPublic().getY().toString("hex"),
       set_data: setData,
       signature: Buffer.from(
-        sig.r.toString(16, 64) + sig.s.toString(16, 64) + sig.recoveryParam.toString(16).padStart(2, "0").slice(-2),
+        sig.r.toString(16, 64) + sig.s.toString(16, 64) + sig.recoveryParam?.toString(16).padStart(2, "0").slice(-2) ?? "00",
         "hex"
       ).toString("base64"),
     };
   }
 
   async setMetadata(data: MetadataParams, namespace: string | null, options?: RequestInit): Promise<string> {
-    if (namespace === null) {
-      const metadataResponse = await post<{ message: string }>(`${this.metadataHost}/set`, { ...data }, options, { useAPIKey: true });
-      return metadataResponse.message;
-    }
-    const metadataResponse = await post<{ message: string }>(`${this.metadataHost}/set`, { ...data, namespace }, options, { useAPIKey: true });
+    const params = namespace !== null ? { ...data, namespace } : data;
+    const metadataResponse = await post<{ message: string }>(`${this.metadataHost}/set`, params, options, { useAPIKey: true });
     return metadataResponse.message;
   }
 
   async getMetadata<T>(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<T> {
-    if (namespace === null) {
-      const metadataResponse = await post<{ message: T }>(`${this.metadataHost}/get`, pubKey, options, { useAPIKey: true });
-      return metadataResponse.message;
-    }
-    const metadataResponse = await post<{ message: T }>(`${this.metadataHost}/get`, { ...pubKey, namespace }, options, { useAPIKey: true });
+    const params = namespace !== null ? { ...pubKey, namespace } : pubKey;
+    const metadataResponse = await post<{ message: T }>(`${this.metadataHost}/get`, params, options, { useAPIKey: true });
     return metadataResponse.message;
   }
 }

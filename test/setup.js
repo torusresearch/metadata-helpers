@@ -4,10 +4,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 const atob = require("atob");
 const btoa = require("btoa");
-require("jsdom-global")("<!doctype html><html><body></body></html>", {
-  url: "https://example.com",
-});
-require("ts-node").register({ project: path.resolve("tsconfig.json"), require: ["tsconfig-paths/register"] });
+require("ts-node").register({ project: path.resolve("tsconfig.json") });
 
 const register = require("@babel/register").default;
 
