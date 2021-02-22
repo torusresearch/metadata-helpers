@@ -37,9 +37,9 @@ describe("Metadata", () => {
       if (googleShare) {
         throw new Error("get Torus share should have nothing");
       }
-      await setTorusShare(storage, privKey.toString("hex"), "google", "someshare");
+      await setTorusShare(storage, privKey.toString("hex"), "google", "customTorusShare");
       googleShare = await getTorusShare<string>(storage, privKey.toString("hex"), "google");
-      assert.strictEqual(googleShare, "someshare");
+      assert.strictEqual(googleShare, "customTorusShare");
     });
 
     it("should set and get WebAuthn Device Share", async () => {
@@ -47,9 +47,9 @@ describe("Metadata", () => {
       if (googleShare) {
         throw new Error("get Torus share should have nothing");
       }
-      await setDeviceShare(storage, privKey.toString("hex"), "google", "someshare");
+      await setDeviceShare(storage, privKey.toString("hex"), "google", "customDeviceShare");
       googleShare = await getDeviceShare<string>(storage, privKey.toString("hex"), "google");
-      assert.strictEqual(googleShare, "someshare");
+      assert.strictEqual(googleShare, "customDeviceShare");
     });
   });
 });
