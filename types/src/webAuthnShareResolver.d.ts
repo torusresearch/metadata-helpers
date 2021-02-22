@@ -8,8 +8,8 @@ declare type EciesHex = {
 };
 export declare function encParamsHexToBuf(encParamsHex: EciesHex): Ecies;
 export declare function encParamsBufToHex(encParams: Ecies): EciesHex;
-export declare function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string, verifierData: unknown): Promise<void>;
-export declare function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string, verifierData: unknown): Promise<void>;
-export declare function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string): Promise<T | null>;
-export declare function getDeviceShare<T>(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string): Promise<T | null>;
+export declare function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: string, subspace: string, subspaceData: unknown): Promise<void>;
+export declare function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, subspace: string, subspaceData: unknown): Promise<void>;
+export declare function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, subspace: string): Promise<T | null>;
+export declare function getDeviceShare<T>(m: MetadataStorageLayer, webAuthnRefHex: string, subspace: string): Promise<T | null>;
 export {};
