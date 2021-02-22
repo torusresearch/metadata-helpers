@@ -5,6 +5,7 @@ import elliptic from "elliptic";
 
 import MetadataStorageLayer from "..";
 import { keccak256 } from "../src/utils";
+// import { getDeviceShare, setDeviceShare } from "../src/webAuthnShareResolver";
 import { getDeviceShare, getTorusShare, setDeviceShare, setTorusShare } from "../src/webAuthnShareResolver";
 
 describe("Metadata", () => {
@@ -14,6 +15,10 @@ describe("Metadata", () => {
   const privKey = generatePrivate();
   const keyPair = ec.keyFromPrivate(privKey);
   const pubKey = keyPair.getPublic();
+
+  const privKey2 = generatePrivate();
+  const keyPair2 = ec.keyFromPrivate(privKey2);
+  const pubKey2 = keyPair2.getPublic();
   let randomMessage: string;
   it("should get nothing by default", async () => {
     const res = await storage.getMetadata({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, null);
@@ -29,12 +34,14 @@ describe("Metadata", () => {
     assert.strictEqual(message, randomMessage);
   });
   it("should set and get WebAuthn Torus Share", async () => {
-    let googleShare = await getTorusShare<string>(storage, privKey.toString("hex"), "google");
-    if (googleShare) {
-      throw new Error("get Torus share should have nothing");
-    }
-    await setTorusShare(storage, privKey.toString("hex"), "google", "customTorusShare");
-    googleShare = await getTorusShare<string>(storage, privKey.toString("hex"), "google");
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      "google",
+      "customTorusShare"
+    );
+    const googleShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), "google");
     assert.strictEqual(googleShare, "customTorusShare");
   });
 
