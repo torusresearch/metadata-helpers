@@ -41,7 +41,7 @@ async function getData<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, names
   }
   const encParamsHex: EciesHex = JSON.parse(serializedData);
   const encParams = encParamsHexToBuf(encParamsHex);
-  const serializedBuf = await decrypt(privKey.toBuffer(), encParams);
+  const serializedBuf = await decrypt(Buffer.from(privKey.toString("hex", 64), "hex"), encParams);
   const serializedDec = serializedBuf.toString("utf-8");
   const data: Record<string, T> = JSON.parse(serializedDec);
   return data;
@@ -56,7 +56,7 @@ export async function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: str
   d[subspace] = subspaceData;
   const serializedDec = JSON.stringify(d);
   const serializedBuf = Buffer.from(serializedDec, "utf-8");
-  const encParams = await encrypt(getPublic(privKey.toBuffer()), serializedBuf);
+  const encParams = await encrypt(getPublic(Buffer.from(privKey.toString("hex", 64), "hex")), serializedBuf);
   const encParamsHex = encParamsBufToHex(encParams);
   const sData = JSON.stringify(encParamsHex);
   const metadataParams = m.generateMetadataParams(sData, privKey.toString(16));
@@ -72,7 +72,7 @@ export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: st
   d[subspace] = subspaceData;
   const serializedDec = JSON.stringify(d);
   const serializedBuf = Buffer.from(serializedDec, "utf-8");
-  const encParams = await encrypt(getPublic(privKey.toBuffer()), serializedBuf);
+  const encParams = await encrypt(getPublic(Buffer.from(privKey.toString("hex", 64), "hex")), serializedBuf);
   const encParamsHex = encParamsBufToHex(encParams);
   const sData = JSON.stringify(encParamsHex);
   const metadataParams = m.generateMetadataParams(sData, privKey.toString(16));
