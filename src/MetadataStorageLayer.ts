@@ -50,6 +50,15 @@ class MetadataStorageLayer {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  generatePubKeyParams(privateKeyHex: string): PubKeyParams {
+    const key = ec.keyFromPrivate(privateKeyHex, "hex");
+    return {
+      pub_key_X: key.getPublic().getX().toString("hex"),
+      pub_key_Y: key.getPublic().getY().toString("hex"),
+    };
+  }
+
   async setMetadata(data: MetadataParams, namespace: string | null, options?: RequestInit): Promise<string> {
     const params = namespace !== null ? { ...data, namespace } : data;
     const metadataResponse = await post<{ message: string }>(`${this.metadataHost}/set`, params, options, { useAPIKey: true });

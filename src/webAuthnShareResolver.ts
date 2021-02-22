@@ -1,7 +1,7 @@
 import { decrypt, Ecies, encrypt, getPublic } from "@toruslabs/eccrypto";
 
 import MetadataStorageLayer from "./MetadataStorageLayer";
-import { ec, Json } from "./utils";
+import { ec } from "./utils";
 
 const WEBAUTHN_TORUS_SHARE = "webauthn-torus-share";
 const WEBAUTHN_DEVICE_SHARE = "webauthn-device-share";
@@ -47,7 +47,7 @@ async function getData<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, names
   return data;
 }
 
-export async function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string, verifierData: Json): Promise<void> {
+export async function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: string, verifier: string, verifierData: unknown): Promise<void> {
   const keyPair = ec.keyFromPrivate(webAuthnKeyHex);
   const privKey = keyPair.getPrivate();
   const data = await getData(m, webAuthnKeyHex, WEBAUTHN_TORUS_SHARE);
@@ -63,7 +63,7 @@ export async function setTorusShare(m: MetadataStorageLayer, webAuthnKeyHex: str
   await m.setMetadata(metadataParams, WEBAUTHN_TORUS_SHARE);
 }
 
-export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string, verifierData: Json): Promise<void> {
+export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, verifier: string, verifierData: unknown): Promise<void> {
   const keyPair = ec.keyFromPrivate(webAuthnRefHex);
   const privKey = keyPair.getPrivate();
   const data = await getData(m, webAuthnRefHex, WEBAUTHN_DEVICE_SHARE);
