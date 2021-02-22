@@ -3,7 +3,7 @@ import { generatePrivate } from "@toruslabs/eccrypto";
 import assert from "assert";
 import elliptic from "elliptic";
 
-import MetadataStorageLayer from "../src/MetadataStorageLayer";
+import MetadataStorageLayer from "..";
 import { keccak256 } from "../src/utils";
 import { getDeviceShare, getTorusShare, setDeviceShare, setTorusShare } from "../src/webAuthnShareResolver";
 
