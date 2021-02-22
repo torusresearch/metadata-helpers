@@ -15,6 +15,7 @@ declare class MetadataStorageLayer {
     static setAPIKey(apiKey: string): void;
     static setEmbedHost(embedHost: string): void;
     generateMetadataParams(message: string, privateKeyHex: string): MetadataParams;
+    generatePubKeyParams(privateKeyHex: string): PubKeyParams;
     setMetadata(data: MetadataParams, namespace: string | null, options?: RequestInit): Promise<string>;
     getMetadata<T>(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<T>;
 }
