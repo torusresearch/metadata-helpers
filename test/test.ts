@@ -30,7 +30,7 @@ describe("Metadata", () => {
     await storage.setMetadata(params, "metadata-test");
   });
   it("should get", async () => {
-    const message = await storage.getMetadata<string>(storage.generatePubKeyParams(privKey.toString("hex")), "metadata-test");
+    const message = await storage.getMetadata(storage.generatePubKeyParams(privKey.toString("hex")), "metadata-test");
     assert.strictEqual(message, randomMessage);
   });
   it("should set and get WebAuthn Torus Share", async () => {

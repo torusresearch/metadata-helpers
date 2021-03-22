@@ -10,7 +10,7 @@ export type PubKeyParams = {
 
 export type MetadataParams = PubKeyParams & {
   set_data: {
-    data: unknown;
+    data: string;
     timestamp: string;
   };
   signature: string;
@@ -65,9 +65,9 @@ class MetadataStorageLayer {
     return metadataResponse.message;
   }
 
-  async getMetadata<T>(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<T> {
+  async getMetadata(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<string> {
     const params = namespace !== null ? { ...pubKey, namespace } : pubKey;
-    const metadataResponse = await post<{ message: T }>(`${this.metadataHost}/get`, params, options, { useAPIKey: true });
+    const metadataResponse = await post<{ message: string }>(`${this.metadataHost}/get`, params, options, { useAPIKey: true });
     return metadataResponse.message;
   }
 }

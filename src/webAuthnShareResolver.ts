@@ -35,7 +35,7 @@ async function getData<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, names
   const keyPair = ec.keyFromPrivate(webAuthnKeyHex);
   const privKey = keyPair.getPrivate();
   const pubKey = keyPair.getPublic();
-  const serializedData = await m.getMetadata<string>({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, namespace);
+  const serializedData = await m.getMetadata({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, namespace);
   if (!serializedData) {
     return null;
   }
