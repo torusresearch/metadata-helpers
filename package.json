@@ -1,6 +1,6 @@
 {
   "name": "@toruslabs/metadata-helpers",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Helper methods for metadata",
   "main": "dist/metadataHelpers.cjs.js",
   "unpkg": "dist/metadataHelpers.umd.min.js",
