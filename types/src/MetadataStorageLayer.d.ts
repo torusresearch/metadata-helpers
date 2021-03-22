@@ -4,7 +4,7 @@ export declare type PubKeyParams = {
 };
 export declare type MetadataParams = PubKeyParams & {
     set_data: {
-        data: unknown;
+        data: string;
         timestamp: string;
     };
     signature: string;
@@ -17,6 +17,6 @@ declare class MetadataStorageLayer {
     generateMetadataParams(message: string, privateKeyHex: string): MetadataParams;
     generatePubKeyParams(privateKeyHex: string): PubKeyParams;
     setMetadata(data: MetadataParams, namespace: string | null, options?: RequestInit): Promise<string>;
-    getMetadata<T>(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<T>;
+    getMetadata(pubKey: PubKeyParams, namespace: string | null, options?: RequestInit): Promise<string>;
 }
 export default MetadataStorageLayer;
