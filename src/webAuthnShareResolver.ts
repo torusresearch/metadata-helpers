@@ -3,8 +3,8 @@ import { decrypt, Ecies, encrypt, getPublic } from "@toruslabs/eccrypto";
 import MetadataStorageLayer, { PubKeyParams } from "./MetadataStorageLayer";
 import { ec } from "./utils";
 
-const WEBAUTHN_TORUS_SHARE = "webauthn-torus-share";
-const WEBAUTHN_DEVICE_SHARE = "webauthn-device-share";
+const WEBAUTHN_TORUS_SHARE = "webauthn_torus_share";
+const WEBAUTHN_DEVICE_SHARE = "webauthn_device_share";
 
 type EciesHex = {
   iv: string;
