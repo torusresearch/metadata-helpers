@@ -31,7 +31,7 @@ export function encParamsBufToHex(encParams: Ecies): EciesHex {
   };
 }
 
-async function getAndDecryptData<T>(m: MetadataStorageLayer, privKeyHex: string, namespace: string): Promise<Record<string, T> | null> {
+export async function getAndDecryptData<T>(m: MetadataStorageLayer, privKeyHex: string, namespace: string): Promise<Record<string, T> | null> {
   const keyPair = ec.keyFromPrivate(privKeyHex);
   const privKey = keyPair.getPrivate();
   const pubKey = keyPair.getPublic();
@@ -47,7 +47,7 @@ async function getAndDecryptData<T>(m: MetadataStorageLayer, privKeyHex: string,
   return data;
 }
 
-async function encryptAndSetData(m: MetadataStorageLayer, privKeyHex: string, d: Record<string, unknown>, namespace: string) {
+export async function encryptAndSetData(m: MetadataStorageLayer, privKeyHex: string, d: Record<string, unknown>, namespace: string): Promise<void> {
   const serializedDec = JSON.stringify(d);
   const serializedBuf = Buffer.from(serializedDec, "utf-8");
   const encParams = await encrypt(getPublic(Buffer.from(privKeyHex, "hex")), serializedBuf);
