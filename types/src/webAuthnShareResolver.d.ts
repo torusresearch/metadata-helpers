@@ -1,6 +1,6 @@
 import { Ecies } from "@toruslabs/eccrypto";
 import MetadataStorageLayer, { PubKeyParams } from "./MetadataStorageLayer";
-declare type EciesHex = {
+export declare type EciesHex = {
     iv: string;
     ephemPublicKey: string;
     ciphertext: string;
@@ -12,4 +12,3 @@ export declare function setTorusShare(m: MetadataStorageLayer, webAuthnPubKey: P
 export declare function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, subspace: string, subspaceData: unknown): Promise<void>;
 export declare function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, webAuthnRefHex: string, subspace: string): Promise<T | null>;
 export declare function getDeviceShare<T>(m: MetadataStorageLayer, webAuthnRefHex: string, subspace: string): Promise<T | null>;
-export {};
