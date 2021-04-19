@@ -95,6 +95,7 @@ export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: 
   const data = await getAndDecryptData<EciesHex>(m, webAuthnRefHex, WEBAUTHN_TORUS_SHARE);
   if (!data) return null;
   const encParamsHex = data[subspace];
+  if (!encParamsHex) return null;
   const encParams = encParamsHexToBuf(encParamsHex);
   const serializedSubspaceDataBuf = await decrypt(Buffer.from(webAuthnKeyHex, "hex"), encParams);
   const serializedSubspaceData = serializedSubspaceDataBuf.toString("utf-8");
