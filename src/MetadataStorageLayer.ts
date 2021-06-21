@@ -19,8 +19,11 @@ export type MetadataParams = PubKeyParams & {
 class MetadataStorageLayer {
   public metadataHost: string;
 
-  constructor(metadataHost = "https://metadata.tor.us") {
+  public serverTimeOffset: number; // ms
+
+  constructor(metadataHost = "https://metadata.tor.us", serverTimeOffset = 0) {
     this.metadataHost = metadataHost;
+    this.serverTimeOffset = serverTimeOffset;
   }
 
   static setAPIKey(apiKey: string): void {
@@ -31,12 +34,11 @@ class MetadataStorageLayer {
     setEmbedHost(embedHost);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   generateMetadataParams(message: string, privateKeyHex: string): MetadataParams {
     const key = ec.keyFromPrivate(privateKeyHex, "hex");
     const setData = {
       data: message,
-      timestamp: Math.floor(Date.now() / 1000).toString(16),
+      timestamp: Math.floor(this.serverTimeOffset + Date.now() / 1000).toString(16),
     };
     const sig = key.sign(keccak256(stringify(setData)));
     return {
