@@ -11,7 +11,8 @@ export declare type MetadataParams = PubKeyParams & {
 };
 declare class MetadataStorageLayer {
     metadataHost: string;
-    constructor(metadataHost?: string);
+    serverTimeOffset: number;
+    constructor(metadataHost?: string, serverTimeOffset?: number);
     static setAPIKey(apiKey: string): void;
     static setEmbedHost(embedHost: string): void;
     generateMetadataParams(message: string, privateKeyHex: string): MetadataParams;
