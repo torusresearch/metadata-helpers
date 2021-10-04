@@ -78,7 +78,7 @@ export async function setTorusShare(
   const encSubspaceData = await encrypt(Buffer.from(pubKey.getPublic("hex"), "hex"), serializedSubspaceDataBuf);
   const encSubspaceDataHex = encParamsBufToHex(encSubspaceData);
   d[subspace] = encSubspaceDataHex;
-  await encryptAndSetData(m, privKey.toString("hex"), d, WEBAUTHN_TORUS_SHARE);
+  await encryptAndSetData(m, privKey.toString("hex", 64), d, WEBAUTHN_TORUS_SHARE);
 }
 
 export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: string, subspace: string, subspaceData: unknown): Promise<void> {
@@ -88,7 +88,7 @@ export async function setDeviceShare(m: MetadataStorageLayer, webAuthnRefHex: st
   let d: Record<string, unknown> = {};
   if (data) d = data;
   d[subspace] = subspaceData;
-  await encryptAndSetData(m, privKey.toString("hex"), d, WEBAUTHN_DEVICE_SHARE);
+  await encryptAndSetData(m, privKey.toString("hex", 64), d, WEBAUTHN_DEVICE_SHARE);
 }
 
 export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: string, webAuthnRefHex: string, subspace: string): Promise<T | null> {
@@ -97,7 +97,9 @@ export async function getTorusShare<T>(m: MetadataStorageLayer, webAuthnKeyHex: 
   const encParamsHex = data[subspace];
   if (!encParamsHex) return null;
   const encParams = encParamsHexToBuf(encParamsHex);
-  const serializedSubspaceDataBuf = await decrypt(Buffer.from(webAuthnKeyHex, "hex"), encParams);
+  const keyPair = ec.keyFromPrivate(webAuthnKeyHex);
+  const privKey = keyPair.getPrivate();
+  const serializedSubspaceDataBuf = await decrypt(Buffer.from(privKey.toString("hex", 64), "hex"), encParams);
   const serializedSubspaceData = serializedSubspaceDataBuf.toString("utf-8");
   const subspaceData = JSON.parse(serializedSubspaceData);
   return subspaceData;
