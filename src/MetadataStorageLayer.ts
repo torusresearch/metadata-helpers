@@ -52,7 +52,6 @@ class MetadataStorageLayer {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   generatePubKeyParams(privateKeyHex: string): PubKeyParams {
     const key = ec.keyFromPrivate(privateKeyHex, "hex");
     return {
