@@ -1,6 +1,6 @@
 {
   "name": "@toruslabs/metadata-helpers",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "Helper methods for metadata",
   "main": "dist/metadataHelpers.cjs.js",
   "module": "dist/metadataHelpers.esm.js",
