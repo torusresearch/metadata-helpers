@@ -82,12 +82,15 @@ exports.nodeConfig = {
   },
   output: {
     filename: `${pkgName}-node.js`,
-    libraryTarget: "commonjs2",
+    library: {
+      type: "commonjs2",
+    },
   },
   externals: [
     nodeExternals({
       allowlist: "@toruslabs/http-helpers",
     }),
+    "node-fetch",
     ...Object.keys(pkg.dependencies).filter((x) => !["@toruslabs/http-helpers"].includes(x)),
     /^(@babel\/runtime)/i,
   ],
