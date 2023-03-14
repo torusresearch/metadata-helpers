@@ -46,7 +46,7 @@ class MetadataStorageLayer {
       pub_key_Y: key.getPublic().getY().toString("hex"),
       set_data: setData,
       signature: Buffer.from(
-        sig.r.toString(16, 64) + sig.s.toString(16, 64) + sig.recoveryParam?.toString(16).padStart(2, "0").slice(-2) ?? "00",
+        sig.r.toString(16, 64) + sig.s.toString(16, 64) + (sig.recoveryParam?.toString(16).padStart(2, "0").slice(-2) ?? "00"),
         "hex"
       ).toString("base64"),
     };
