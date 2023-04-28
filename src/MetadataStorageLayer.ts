@@ -40,10 +40,10 @@ class MetadataStorageLayer {
       data: message,
       timestamp: Math.floor(this.serverTimeOffset + Date.now() / 1000).toString(16),
     };
-    const sig = key.sign(keccak256(stringify(setData)));
+    const sig = key.sign(keccak256(Buffer.from(stringify(setData), "utf8")));
     return {
-      pub_key_X: key.getPublic().getX().toString("hex"),
-      pub_key_Y: key.getPublic().getY().toString("hex"),
+      pub_key_X: key.getPublic().getX().toString(16, 64),
+      pub_key_Y: key.getPublic().getY().toString(16, 64),
       set_data: setData,
       signature: Buffer.from(
         sig.r.toString(16, 64) + sig.s.toString(16, 64) + (sig.recoveryParam?.toString(16).padStart(2, "0").slice(-2) ?? "00"),
@@ -55,8 +55,8 @@ class MetadataStorageLayer {
   generatePubKeyParams(privateKeyHex: string): PubKeyParams {
     const key = ec.keyFromPrivate(privateKeyHex, "hex");
     return {
-      pub_key_X: key.getPublic().getX().toString("hex"),
-      pub_key_Y: key.getPublic().getY().toString("hex"),
+      pub_key_X: key.getPublic().getX().toString(16, 64),
+      pub_key_Y: key.getPublic().getY().toString(16, 64),
     };
   }
 

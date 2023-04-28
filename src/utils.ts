@@ -1,8 +1,8 @@
 import { ec as EC } from "elliptic";
-import createKeccakHash from "keccak";
+import { keccak256 as keccakHash } from "ethereum-cryptography/keccak";
 
-export function keccak256(a: string | Buffer): Buffer {
-  return createKeccakHash("keccak256").update(a).digest();
+export function keccak256(a: Buffer): Buffer {
+  return Buffer.from(keccakHash(a));
 }
 
 export const ec = new EC("secp256k1");
