@@ -27,7 +27,7 @@
     "@toruslabs/eccrypto": "^3.0.0",
     "@toruslabs/http-helpers": "^4.0.0",
     "elliptic": "^6.5.4",
-    "ethereum-cryptography": "^2.0.0",
+    "ethereum-cryptography": "2.0.0",
     "json-stable-stringify": "^1.0.2"
   },
   "devDependencies": {
