@@ -24,8 +24,8 @@
     "@babel/runtime": "7.x"
   },
   "dependencies": {
-    "@toruslabs/eccrypto": "^3.0.0",
-    "@toruslabs/http-helpers": "^4.0.0",
+    "@toruslabs/eccrypto": "^4.0.0",
+    "@toruslabs/http-helpers": "^5.0.0",
     "elliptic": "^6.5.4",
     "ethereum-cryptography": "^2.1.2",
     "json-stable-stringify": "^1.0.2"
