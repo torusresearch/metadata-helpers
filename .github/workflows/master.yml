@@ -1,7 +1,6 @@
 on:
   push:
-    branches-ignore:
-      - 'master'
+    branches: [master]
 
 name: Run Tests
 
