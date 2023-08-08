@@ -1,7 +1,10 @@
 # Metadata-helpers
 
-[![npm version](https://badge.fury.io/js/%40toruslabs%2Fmetadata-helpers.svg)](https://badge.fury.io/js/%40toruslabs%2Fmetadata-helpers)
-![npm](https://img.shields.io/npm/dw/@toruslabs/metadata-helpers)
+![Build Status](https://github.com/torusresearch/metadata-helpers/actions/workflows/master.yml/badge.svg)
+
+[![npm downloads](https://img.shields.io/npm/dm/@toruslabs/metadata-helpers.svg?style=flat-square)](https://www.npmjs.com/package/@toruslabs/metadata-helpers)
+
+[![NPM](https://nodei.co/npm/@toruslabs/metadata-helpers.png)](https://www.npmjs.com/package/@toruslabs/metadata-helpers)
 
 ## Introduction
 
@@ -18,10 +21,9 @@ This repo allow you to get and set metadata
 
 This module is distributed in 3 formats
 
-- `commonjs` build `dist/metadataHelpers.cjs.js` in es5 format
-- `commonjs` build `dist/metadataHelpers-bundled.cjs.js` in es5 format with problematic packages bundled (benfits non-webpack users)
+- `ems` build `dist/metadataHelpers.esm.js` in es5 format
+- `commonjs` build `dist/metadataHelpers.cjs.js` in es5 format with problematic packages bundled (benfits non-webpack users)
 - `umd` build `dist/metadataHelpers.umd.min.js` in es5 format without polyfilling corejs minified
-- `umd` build `dist/metadataHelpers.polyfill.umd.min.js` in es5 format with polyfilling corejs minified
 
 By default, the appropriate format is used for your specified usecase
 You can use a different format (if you know what you're doing) by referencing the correct file
@@ -56,12 +58,11 @@ Add [`@toruslabs/metadata-helpers`](https://www.npmjs.com/package/@toruslabs/met
 To allow your web app to retrieve keys:
 
 Install the package
-   `npm i @toruslabs/metadata-helpers`
-   or
-   `yarn add @toruslabs/metadata-helpers`
+`npm i @toruslabs/metadata-helpers`
+or
+`yarn add @toruslabs/metadata-helpers`
 
 ## Requirements
 
 - This package requires a peer dependency of `@babel/runtime`
-- Node 14+
-
+- Node 18+
