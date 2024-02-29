@@ -51,9 +51,9 @@ export async function decryptData<T>(privKeyHex: string, d: string): Promise<T> 
 }
 
 export async function getAndDecryptData<T>(m: MetadataStorageLayer, privKeyHex: string, namespace: string): Promise<Record<string, T> | null> {
-  const keyPair = ec.keyFromPrivate(privKeyHex);
+  const keyPair = ec.keyFromPrivate(privKeyHex, "hex");
   const pubKey = keyPair.getPublic();
-  const serializedData = await m.getMetadata({ pub_key_X: pubKey.getX().toString(16), pub_key_Y: pubKey.getY().toString(16) }, namespace);
+  const serializedData = await m.getMetadata({ pub_key_X: pubKey.getX().toString(16, 64), pub_key_Y: pubKey.getY().toString(16, 64) }, namespace);
   if (!serializedData) {
     return null;
   }
