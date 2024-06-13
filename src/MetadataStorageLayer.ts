@@ -16,7 +16,7 @@ export type MetadataParams = PubKeyParams & {
   signature: string;
 };
 
-class MetadataStorageLayer {
+export class MetadataStorageLayer {
   public metadataHost: string;
 
   public serverTimeOffset: number; // ms
@@ -72,5 +72,3 @@ class MetadataStorageLayer {
     return metadataResponse.message;
   }
 }
-
-export default MetadataStorageLayer;
