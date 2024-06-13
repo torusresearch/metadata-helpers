@@ -1,6 +1,6 @@
 import { decrypt, Ecies, encrypt, getPublic } from "@toruslabs/eccrypto";
 
-import MetadataStorageLayer, { PubKeyParams } from "./MetadataStorageLayer";
+import { MetadataStorageLayer, PubKeyParams } from "./MetadataStorageLayer";
 import { ec } from "./utils";
 
 const WEBAUTHN_TORUS_SHARE = "webauthn_torus_share";
