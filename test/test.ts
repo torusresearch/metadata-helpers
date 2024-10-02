@@ -4,7 +4,6 @@ import elliptic from "elliptic";
 
 import { MetadataStorageLayer } from "../src/MetadataStorageLayer";
 import { keccak256 } from "../src/utils";
-// import { getDeviceShare, setDeviceShare } from "../src/webAuthnShareResolver";
 import { getDeviceShare, getTorusShare, setDeviceShare, setTorusShare } from "../src/webAuthnShareResolver";
 
 const EC = elliptic.ec;
@@ -57,5 +56,113 @@ describe("Metadata", function () {
     await setDeviceShare(storage, privKey.toString("hex"), "google", "customDeviceShare");
     googleShare = await getDeviceShare<string>(storage, privKey.toString("hex"), "google");
     assert.strictEqual(googleShare, "customDeviceShare");
+  });
+
+  it("should set and get multiple WebAuthn Torus Shares", async function () {
+    const subspaces = ["facebook", "twitter", "github"];
+    const shares = ["fbShare", "twitterShare", "githubShare"];
+
+    // Set shares for multiple subspaces
+    for (let i = 0; i < subspaces.length; i++) {
+      await setTorusShare(
+        storage,
+        { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+        privKey.toString("hex"),
+        subspaces[i],
+        shares[i]
+      );
+    }
+
+    // Get and verify shares for each subspace
+    for (let i = 0; i < subspaces.length; i++) {
+      const retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspaces[i]);
+      assert.strictEqual(retrievedShare, shares[i], `Share for ${subspaces[i]} should match`);
+    }
+  });
+
+  it("should handle non-existent WebAuthn Torus Share", async function () {
+    const nonExistentShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), "nonexistent");
+    assert.strictEqual(nonExistentShare, null, "Non-existent share should return null");
+  });
+
+  it("should update existing WebAuthn Torus Share", async function () {
+    const initialShare = "initialShare";
+    const updatedShare = "updatedShare";
+    const subspace = "updateTest";
+
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      subspace,
+      initialShare
+    );
+
+    let retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
+    assert.strictEqual(retrievedShare, initialShare, "Initial share should be set correctly");
+
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      subspace,
+      updatedShare
+    );
+
+    retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
+    assert.strictEqual(retrievedShare, updatedShare, "Share should be updated");
+  });
+
+  it("should handle multiple subspaces with different data types", async function () {
+    const subspaces = ["stringSpace", "numberSpace", "objectSpace"];
+    const shares = ["testString", 42, { key: "value" }];
+
+    for (let i = 0; i < subspaces.length; i++) {
+      await setTorusShare(
+        storage,
+        { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+        privKey.toString("hex"),
+        subspaces[i],
+        shares[i]
+      );
+    }
+
+    for (let i = 0; i < subspaces.length; i++) {
+      const retrievedShare = await getTorusShare(storage, privKey2.toString("hex"), privKey.toString("hex"), subspaces[i]);
+      assert.deepStrictEqual(retrievedShare, shares[i], `Share for ${subspaces[i]} should match and maintain its data type`);
+    }
+  });
+
+  it("should handle empty string as share data", async function () {
+    const emptyShare = "";
+    const subspace = "emptySpace";
+
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      subspace,
+      emptyShare
+    );
+
+    const retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
+    assert.strictEqual(retrievedShare, emptyShare, "Empty string share should be retrieved correctly");
+  });
+
+  it("should handle large data in WebAuthn Torus Share", async function () {
+    const largeData = "x".repeat(1000000); // 1MB of data
+    const subspace = "largeDataSpace";
+
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      subspace,
+      largeData
+    );
+
+    const retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
+    assert.strictEqual(retrievedShare, largeData, "Large data should be retrieved correctly");
+    assert.strictEqual(retrievedShare?.length, 1000000, "Retrieved data should maintain its size");
   });
 });
