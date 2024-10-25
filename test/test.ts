@@ -1,12 +1,11 @@
 import { generatePrivate } from "@toruslabs/eccrypto";
 import assert from "assert";
-import elliptic from "elliptic";
+import { ec as EC } from "elliptic";
 
 import { MetadataStorageLayer } from "../src/MetadataStorageLayer";
 import { keccak256 } from "../src/utils";
 import { getDeviceShare, getTorusShare, setDeviceShare, setTorusShare } from "../src/webAuthnShareResolver";
 
-const EC = elliptic.ec;
 const ec = new EC("secp256k1");
 const storage = new MetadataStorageLayer();
 const privKey = generatePrivate();
