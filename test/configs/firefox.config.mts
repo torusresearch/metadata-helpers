@@ -1,9 +1,8 @@
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [nodePolyfills({ include: ["buffer"] })],
   test: {
+    setupFiles: ["./test/configs/browserSetup.ts"],
     reporters: "verbose",
     browser: {
       screenshotFailures: false,
@@ -11,6 +10,7 @@ export default defineConfig({
       provider: "playwright",
       name: "firefox",
       enabled: true,
+      testerHtmlPath: "./test/test.html",
     },
     coverage: {
       reporter: ["text"],
