@@ -14,7 +14,12 @@
     "release": "torus-scripts release",
     "lint:ts": "eslint --fix 'src/**/*.ts'",
     "prepack": "npm run build",
-    "test": "mocha ./test/test.ts",
+    "test": "npm run test:node && npm run test:browsers",
+    "test:node": "vitest run --config test/configs/node.config.mts --coverage",
+    "test:chrome": "vitest run --config test/configs/chrome.config.mts --coverage",
+    "test:firefox": "vitest run --config test/configs/firefox.config.mts --coverage",
+    "test:safari": "vitest run --config test/configs/safari.config.mts --coverage",
+    "test:browsers": "npm run test:chrome && npm run test:firefox && npm run test:safari",
     "prepare": "husky"
   },
   "files": [
@@ -24,29 +29,31 @@
     "@babel/runtime": "7.x"
   },
   "dependencies": {
-    "@toruslabs/eccrypto": "^5.0.4",
-    "@toruslabs/http-helpers": "^7.0.0",
-    "elliptic": "^6.5.7",
-    "ethereum-cryptography": "^2.2.0",
-    "json-stable-stringify": "^1.1.1"
+    "@toruslabs/eccrypto": "^6.0.0",
+    "@toruslabs/http-helpers": "^7.0.1",
+    "elliptic": "^6.6.1",
+    "ethereum-cryptography": "^3.0.0",
+    "json-stable-stringify": "^1.2.1"
   },
   "devDependencies": {
     "@babel/register": "^7.25.9",
-    "@toruslabs/config": "^2.2.0",
-    "@toruslabs/eslint-config-node": "^3.3.4",
-    "@toruslabs/torus-scripts": "^6.1.5",
+    "@toruslabs/config": "^3.0.0",
+    "@toruslabs/eslint-config-node": "^4.0.2",
+    "@toruslabs/torus-scripts": "^7.0.2",
     "@types/elliptic": "^6.4.18",
     "@types/json-stable-stringify": "^1.1.0",
-    "@types/mocha": "^10.0.9",
-    "@types/node": "^20.14.2",
-    "eslint": "^8.57.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
-    "mocha": "^10.7.3",
-    "prettier": "^3.3.3",
+    "@types/node": "^22.10.5",
+    "@vitest/browser": "^2.1.8",
+    "@vitest/coverage-istanbul": "^2.1.8",
+    "eslint": "^9.17.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "playwright": "^1.49.1",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.1",
-    "typescript": "^5.6.3"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   },
   "author": "Torus Labs",
   "license": "MIT",
@@ -75,7 +82,7 @@
     "direct auth"
   ],
   "engines": {
-    "node": ">=18.x",
+    "node": ">=20.x",
     "npm": ">=9.x"
   }
 }
