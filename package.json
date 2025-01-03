@@ -29,20 +29,20 @@
     "@babel/runtime": "7.x"
   },
   "dependencies": {
-    "@toruslabs/eccrypto": "^5.0.4",
-    "@toruslabs/http-helpers": "^7.0.0",
+    "@toruslabs/eccrypto": "^6.0.0",
+    "@toruslabs/http-helpers": "^7.0.1",
     "elliptic": "^6.6.1",
     "ethereum-cryptography": "^3.0.0",
     "json-stable-stringify": "^1.2.1"
   },
   "devDependencies": {
     "@babel/register": "^7.25.9",
-    "@toruslabs/config": "^2.2.0",
-    "@toruslabs/eslint-config-node": "^4.0.1",
-    "@toruslabs/torus-scripts": "^7.0.1",
+    "@toruslabs/config": "^3.0.0",
+    "@toruslabs/eslint-config-node": "^4.0.2",
+    "@toruslabs/torus-scripts": "^7.0.2",
     "@types/elliptic": "^6.4.18",
     "@types/json-stable-stringify": "^1.1.0",
-    "@types/node": "^22.10.4",
+    "@types/node": "^22.10.5",
     "@vitest/browser": "^2.1.8",
     "@vitest/coverage-istanbul": "^2.1.8",
     "eslint": "^9.17.0",
