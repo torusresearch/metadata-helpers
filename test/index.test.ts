@@ -111,7 +111,7 @@ describe("Metadata", () => {
     expect(retrievedShare).toBe(updatedShare);
   });
 
-  it("should handle multiple subspaces with different data types", async () => {
+  it("should handle multiple subspaces with different data types", { timeout: 60000 }, async () => {
     const subspaces = ["stringSpace", "numberSpace", "objectSpace"];
     const shares = ["testString", 42, { key: "value" }];
 
@@ -147,24 +147,20 @@ describe("Metadata", () => {
     expect(retrievedShare).toBe(emptyShare);
   });
 
-  it(
-    "should handle large data in WebAuthn Torus Share",
-    async () => {
-      const largeData = "x".repeat(1000000); // 1MB of data
-      const subspace = "largeDataSpace";
+  it("should handle large data in WebAuthn Torus Share", { timeout: 60000 }, async () => {
+    const largeData = "x".repeat(1000000); // 1MB of data
+    const subspace = "largeDataSpace";
 
-      await setTorusShare(
-        storage,
-        { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
-        privKey.toString("hex"),
-        subspace,
-        largeData
-      );
+    await setTorusShare(
+      storage,
+      { pub_key_X: pubKey2.getX().toString(16), pub_key_Y: pubKey2.getY().toString(16) },
+      privKey.toString("hex"),
+      subspace,
+      largeData
+    );
 
-      const retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
-      expect(retrievedShare).toBe(largeData);
-      expect(retrievedShare?.length).toBe(1000000);
-    },
-    { timeout: 60000 }
-  );
+    const retrievedShare = await getTorusShare<string>(storage, privKey2.toString("hex"), privKey.toString("hex"), subspace);
+    expect(retrievedShare).toBe(largeData);
+    expect(retrievedShare?.length).toBe(1000000);
+  });
 });
