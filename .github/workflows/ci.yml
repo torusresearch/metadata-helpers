@@ -10,7 +10,7 @@ jobs:
     name: run tests
     strategy:
       matrix:
-        node: ["20.x"]
+        node: ["22.x"]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -27,5 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install playwright webkit
+        run: npx playwright install-deps webkit
+
       - name: Run tests
-        run: npm run test
+        run: npx playwright install && npm run test
